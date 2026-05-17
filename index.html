@@ -412,7 +412,8 @@
         y
       );
 
-      doc.save("slip-lembur.pdf");
+      // Buka PDF di Android/Kodular
+      window.open(doc.output('bloburl'));
 
     }
 
