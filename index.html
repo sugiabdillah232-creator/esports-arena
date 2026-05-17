@@ -2,53 +2,41 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kalkulator Upah Lembur</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalkulator Lembur</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body class="bg-slate-100 min-h-screen p-4">
 
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-3xl mx-auto">
 
-    <!-- HEADER -->
-    <div class="bg-indigo-700 text-white rounded-3xl shadow-2xl overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
 
-      <div class="p-8 text-center">
-
-        <div class="flex justify-center mb-3">
-          <div class="bg-white/20 p-4 rounded-full">
-            <i data-lucide="calculator"></i>
-          </div>
-        </div>
-
-        <h1 class="text-3xl font-bold">
+      <div class="bg-indigo-700 text-white p-6 text-center">
+        <h1 class="text-2xl font-bold flex justify-center items-center gap-2">
+          <i data-lucide="calculator"></i>
           Kalkulator Upah Lembur
         </h1>
 
         <p class="text-indigo-200 mt-2">
-          Sistem Perhitungan PP No.35 Tahun 2021
+          PP No.35 Tahun 2021
         </p>
-
       </div>
 
-    </div>
-
-
-    <!-- FORM -->
-    <div class="bg-white rounded-3xl shadow-xl mt-6 p-6">
-
-      <div class="grid md:grid-cols-2 gap-5">
+      <div class="p-6 space-y-5">
 
         <div>
           <label class="font-semibold block mb-2">Tanggal</label>
           <input
             type="date"
             id="tanggal"
-            class="w-full border rounded-xl p-3"
+            class="w-full border rounded-lg p-3"
           />
         </div>
 
@@ -58,7 +46,7 @@
             type="text"
             id="nama"
             placeholder="Masukkan nama"
-            class="w-full border rounded-xl p-3"
+            class="w-full border rounded-lg p-3"
           />
         </div>
 
@@ -67,8 +55,8 @@
           <input
             type="number"
             id="gaji"
-            placeholder="5000000"
-            class="w-full border rounded-xl p-3"
+            value="0"
+            class="w-full border rounded-lg p-3"
           />
         </div>
 
@@ -77,134 +65,107 @@
 
           <select
             id="jenisHari"
-            class="w-full border rounded-xl p-3"
+            class="w-full border rounded-lg p-3"
           >
             <option value="kerja">Hari Kerja</option>
             <option value="libur">Hari Libur</option>
           </select>
         </div>
 
-      </div>
+        <div>
+          <label class="font-semibold block mb-2">Jam Lembur</label>
 
+          <input
+            type="range"
+            id="jam"
+            min="1"
+            max="24"
+            value="1"
+            class="w-full"
+          />
 
-      <!-- SLIDER -->
-      <div class="mt-6">
-
-        <label class="font-semibold block mb-3">
-          Jam Lembur
-        </label>
-
-        <input
-          type="range"
-          id="jam"
-          min="1"
-          max="24"
-          value="1"
-          class="w-full"
-        />
-
-        <div class="text-center mt-3 text-2xl font-bold text-indigo-700">
-          <span id="jamText">1</span> Jam
+          <div class="text-center text-indigo-700 font-bold mt-2">
+            <span id="jamText">1</span> Jam
+          </div>
         </div>
-
-      </div>
-
-
-      <!-- HASIL -->
-      <div class="bg-slate-50 border rounded-2xl p-5 mt-6 space-y-4">
-
-        <div class="flex justify-between">
-          <span>Upah per Jam</span>
-          <span id="upahPerJam">Rp 0</span>
-        </div>
-
-        <div class="flex justify-between">
-          <span>Konversi Lembur</span>
-          <span id="konversiJam">0</span>
-        </div>
-
-        <div class="flex justify-between">
-          <span>Total Jam Bulanan</span>
-          <span id="totalJamBulanan">0 Jam</span>
-        </div>
-
-        <hr>
-
-        <div class="flex justify-between text-2xl font-bold text-green-600">
-          <span>Total Upah</span>
-          <span id="total">Rp 0</span>
-        </div>
-
-      </div>
-
-
-      <!-- BUTTON -->
-      <div class="grid md:grid-cols-3 gap-3 mt-6">
 
         <button
           onclick="simpanLembur()"
-          class="bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-bold"
         >
-          Simpan
+          Simpan Lembur
         </button>
 
-        <button
-          onclick="downloadPDF()"
-          class="bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold"
-        >
-          Download PDF
-        </button>
+        <div class="bg-slate-50 rounded-xl p-5 border">
 
-        <button
-          onclick="hapusData()"
-          class="bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-bold"
-        >
-          Hapus Data
-        </button>
+          <div class="flex justify-between mb-3">
+            <span>Upah per Jam</span>
+            <span id="upahPerJam">Rp 0</span>
+          </div>
+
+          <div class="flex justify-between mb-3">
+            <span>Konversi Jam</span>
+            <span id="konversiJam">0</span>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="flex justify-between text-xl font-bold text-green-600">
+            <span>Total</span>
+            <span id="total">Rp 0</span>
+          </div>
+
+        </div>
 
       </div>
 
     </div>
 
+    <!-- Rekap -->
+    <div class="bg-white rounded-2xl shadow-xl mt-6 p-6">
 
-    <!-- REKAP -->
-    <div class="bg-white rounded-3xl shadow-xl mt-6 p-6 overflow-auto">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Rekap Lembur Bulanan</h2>
 
-      <h2 class="text-2xl font-bold mb-5">
-        Rekap Lembur Bulanan
-      </h2>
+        <button
+          onclick="downloadPDF()"
+          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+        >
+          Download PDF
+        </button>
+      </div>
 
-      <table class="w-full border-collapse">
+      <div class="overflow-auto">
 
-        <thead>
-          <tr class="bg-slate-100">
-            <th class="border p-3">Tanggal</th>
-            <th class="border p-3">Nama</th>
-            <th class="border p-3">Jam</th>
-            <th class="border p-3">Jenis</th>
-            <th class="border p-3">Total</th>
-          </tr>
-        </thead>
+        <table class="w-full border-collapse">
 
-        <tbody id="tabelLembur"></tbody>
+          <thead>
+            <tr class="bg-slate-100">
+              <th class="border p-2">Tanggal</th>
+              <th class="border p-2">Jam</th>
+              <th class="border p-2">Jenis</th>
+              <th class="border p-2">Upah</th>
+            </tr>
+          </thead>
 
-      </table>
+          <tbody id="tabelLembur"></tbody>
 
+        </table>
 
-      <div class="text-right text-3xl font-bold text-indigo-700 mt-5">
-        Grand Total:
+      </div>
+
+      <div class="mt-5 text-right text-2xl font-bold text-indigo-700">
+        Total Bulanan:
         <span id="grandTotal">Rp 0</span>
       </div>
 
     </div>
 
-
-    <footer class="text-center text-slate-500 text-sm py-6">
+    <footer class="text-center text-sm text-slate-500 py-4">
       © 2026 Sugiproduction.com — All Rights Reserved
     </footer>
 
   </div>
-
 
   <script>
 
@@ -218,11 +179,9 @@
       hitungPreview();
     });
 
-
     function rupiah(angka) {
       return "Rp " + Math.round(angka).toLocaleString("id-ID");
     }
-
 
     function hitungLembur(gaji, jenisHari, jam) {
 
@@ -265,9 +224,7 @@
         konversi,
         total
       };
-
     }
-
 
     function hitungPreview() {
 
@@ -283,7 +240,6 @@
 
     }
 
-
     function simpanLembur() {
 
       const tanggal = document.getElementById("tanggal").value;
@@ -291,11 +247,6 @@
       const gaji = parseFloat(document.getElementById("gaji").value);
       const jenisHari = document.getElementById("jenisHari").value;
       const jam = parseInt(document.getElementById("jam").value);
-
-      if (!tanggal || !nama || !gaji) {
-        alert("Lengkapi data terlebih dahulu");
-        return;
-      }
 
       const hasil = hitungLembur(gaji, jenisHari, jam);
 
@@ -319,7 +270,6 @@
 
     }
 
-
     function tampilkanData() {
 
       const tabel = document.getElementById("tabelLembur");
@@ -329,43 +279,25 @@
       let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
 
       let grandTotal = 0;
-      let totalJam = 0;
 
       daftar.forEach(item => {
 
         grandTotal += item.total;
-        totalJam += item.jam;
 
         tabel.innerHTML += `
           <tr>
-            <td class="border p-3">${item.tanggal}</td>
-            <td class="border p-3">${item.nama}</td>
-            <td class="border p-3 text-center">${item.jam}</td>
-            <td class="border p-3">${item.jenisHari}</td>
-            <td class="border p-3">${rupiah(item.total)}</td>
+            <td class="border p-2">${item.tanggal}</td>
+            <td class="border p-2 text-center">${item.jam}</td>
+            <td class="border p-2">${item.jenisHari}</td>
+            <td class="border p-2">${rupiah(item.total)}</td>
           </tr>
         `;
 
       });
 
       document.getElementById("grandTotal").innerText = rupiah(grandTotal);
-      document.getElementById("totalJamBulanan").innerText = totalJam + " Jam";
 
     }
-
-
-    function hapusData() {
-
-      if (confirm("Hapus semua data lembur?")) {
-
-        localStorage.removeItem("lembur");
-
-        tampilkanData();
-
-      }
-
-    }
-
 
     async function downloadPDF() {
 
@@ -375,21 +307,15 @@
 
       let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
 
-      let grandTotal = 0;
-
       doc.setFontSize(18);
       doc.text("Slip Rekap Lembur", 20, 20);
-
-      doc.setFontSize(12);
 
       let y = 40;
 
       daftar.forEach((item, index) => {
 
-        grandTotal += item.total;
-
         doc.text(
-          `${index + 1}. ${item.tanggal} | ${item.nama} | ${item.jam} Jam | ${item.jenisHari} | ${rupiah(item.total)}`,
+          `${index + 1}. ${item.tanggal} | ${item.jam} Jam | ${item.jenisHari} | ${rupiah(item.total)}`,
           20,
           y
         );
@@ -398,28 +324,9 @@
 
       });
 
-      // Garis pemisah
-      doc.line(20, y, 190, y);
-
-      y += 15;
-
-      // Grand Total
-      doc.setFontSize(16);
-
-      doc.text(
-        `Grand Total : ${rupiah(grandTotal)}`,
-        20,
-        y
-      );
-
-      // Buka PDF di Android/Kodular
-      window.open(doc.output('bloburl'));
+      doc.save("slip-lembur.pdf");
 
     }
-
-
-    document.getElementById("gaji").addEventListener("input", hitungPreview);
-    document.getElementById("jenisHari").addEventListener("change", hitungPreview);
 
     hitungPreview();
     tampilkanData();
