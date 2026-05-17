@@ -369,53 +369,61 @@
 
     async function downloadPDF() {
 
-      const { jsPDF } = window.jspdf;
+  const { jsPDF } = window.jspdf;
 
-      const doc = new jsPDF();
+  const doc = new jsPDF();
 
-      let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
+  let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
 
-      let grandTotal = 0;
+  let grandTotal = 0;
 
-      doc.setFontSize(18);
-      doc.text("Slip Rekap Lembur", 20, 20);
+  doc.setFontSize(18);
+  doc.text("Slip Rekap Lembur", 20, 20);
 
-      doc.setFontSize(12);
+  doc.setFontSize(12);
 
-      let y = 40;
+  let y = 40;
 
-      daftar.forEach((item, index) => {
+  daftar.forEach((item, index) => {
 
-        grandTotal += item.total;
+    grandTotal += item.total;
 
-        doc.text(
-          `${index + 1}. ${item.tanggal} | ${item.nama} | ${item.jam} Jam | ${item.jenisHari} | ${rupiah(item.total)}`,
-          20,
-          y
-        );
+    doc.text(
+      `${index + 1}. ${item.tanggal} | ${item.nama} | ${item.jam} Jam | ${item.jenisHari} | ${rupiah(item.total)}`,
+      20,
+      y
+    );
 
-        y += 10;
+    y += 10;
 
-      });
+  });
 
-      // Garis pemisah
-      doc.line(20, y, 190, y);
+  // Garis
+  doc.line(20, y, 190, y);
 
-      y += 15;
+  y += 15;
 
-      // Grand Total
-      doc.setFontSize(16);
+  // Grand Total
+  doc.setFontSize(16);
 
-      doc.text(
-        `Grand Total : ${rupiah(grandTotal)}`,
-        20,
-        y
-      );
+  doc.text(
+    `Grand Total : ${rupiah(grandTotal)}`,
+    20,
+    y
+  );
 
-      // Buka PDF di Android/Kodular
-      window.open(doc.output('bloburl'));
+  // Nama file
+  const pdfBlob = doc.output("blob");
 
-    }
+  const link = document.createElement("a");
+
+  link.href = URL.createObjectURL(pdfBlob);
+
+  link.download = "Slip-Lembur.pdf";
+
+  link.click();
+
+}
 
 
     document.getElementById("gaji").addEventListener("input", hitungPreview);
