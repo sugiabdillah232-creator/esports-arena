@@ -1,44 +1,193 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khanza Esports Arena</title>
-<script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalkulator Lembur</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-black text-white min-h-screen">
 
-<div class="max-w-6xl mx-auto px-6 py-20">
-  <h1 class="text-5xl md:text-7xl font-extrabold text-purple-400">
-    KHANZA ESPORTS ARENA
-  </h1>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
 
-  <p class="mt-6 text-xl text-gray-300">
-    Website Turnamen Mobile Legends dengan tema neon esports modern.
-  </p>
+  <div class="w-full max-w-2xl">
 
-  <div class="grid md:grid-cols-3 gap-6 mt-12">
-    <div class="bg-purple-900/40 rounded-3xl p-8">
-      <h2 class="text-2xl font-bold">Prize Pool</h2>
-      <p class="mt-4 text-3xl">Rp5.000.000</p>
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+
+      <div class="bg-indigo-700 text-white p-6 text-center">
+        <h1 class="text-2xl font-bold flex justify-center items-center gap-2">
+          <i data-lucide="calculator"></i>
+          Kalkulator Upah Lembur
+        </h1>
+
+        <p class="text-sm text-indigo-200 mt-2">
+          Berdasarkan Aturan PP No.35 Tahun 2021 ( UU Cipta Kerja )
+        </p>
+      </div>
+
+      <div class="p-6 space-y-5">
+
+        <div>
+          <label class="block mb-2 font-semibold">
+            Gaji Bulanan
+          </label>
+
+          <input
+            type="number"
+            id="gaji"
+            value=" "
+            class="w-full border rounded-lg p-3"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-2 font-semibold">
+            Jenis Hari
+          </label>
+
+          <select
+            id="jenisHari"
+            class="w-full border rounded-lg p-3"
+          >
+            <option value="kerja">Hari Kerja</option>
+            <option value="libur">Hari Libur</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block mb-2 font-semibold">
+            Jam Lembur
+          </label>
+
+          <input
+            type="range"
+            id="jam"
+            min="1"
+            max="24"
+            value="1"
+            class="w-full"
+          />
+
+          <div class="text-center mt-2 font-bold text-indigo-700">
+            <span id="jamText">1</span> Jam
+          </div>
+        </div>
+
+        <button
+          onclick="hitungLembur()"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-bold"
+        >
+          Hitung Lembur
+        </button>
+
+        <div class="bg-slate-50 rounded-xl p-5 border">
+
+          <div class="flex justify-between mb-3">
+            <span>Upah per Jam</span>
+            <span id="upahPerJam">Rp 0</span>
+          </div>
+
+          <div class="flex justify-between mb-3">
+            <span>Konversi Jam</span>
+            <span id="konversiJam">0</span>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="flex justify-between text-xl font-bold text-green-600">
+            <span>Total</span>
+            <span id="total">Rp 0</span>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="bg-fuchsia-900/40 rounded-3xl p-8">
-      <h2 class="text-2xl font-bold">Game</h2>
-      <p class="mt-4 text-2xl">Mobile Legends</p>
-    </div>
+    <!-- Footer -->
+    <footer class="text-center text-sm text-slate-500 py-4">
+      © 2026 sugiproduction — All Rights Reserved
+    </footer>
 
-    <div class="bg-purple-900/40 rounded-3xl p-8">
-      <h2 class="text-2xl font-bold">WhatsApp</h2>
-      <p class="mt-4 text-2xl">085283914900</p>
-    </div>
   </div>
 
-  <a href="https://wa.me/6285283914900"
-     class="inline-block mt-12 bg-purple-600 hover:bg-purple-500 px-8 py-4 rounded-2xl text-xl font-bold">
-     Daftar Sekarang
-  </a>
-</div>
+  <script>
+
+    lucide.createIcons();
+
+    const jamSlider = document.getElementById("jam");
+    const jamText = document.getElementById("jamText");
+
+    jamSlider.addEventListener("input", () => {
+      jamText.innerText = jamSlider.value;
+      hitungLembur();
+    });
+
+    function rupiah(angka) {
+      return "Rp " + Math.round(angka).toLocaleString("id-ID");
+    }
+
+    function hitungLembur() {
+
+      const gaji =
+        parseFloat(document.getElementById("gaji").value) || 0;
+
+      const jenisHari =
+        document.getElementById("jenisHari").value;
+
+      const jam =
+        parseInt(document.getElementById("jam").value);
+
+      const upahPerJam = gaji / 173;
+
+      let konversi = 0;
+
+      if (jenisHari === "kerja") {
+
+        if (jam >= 1) {
+          konversi += 1.5;
+        }
+
+        if (jam > 1) {
+          konversi += (jam - 1) * 2;
+        }
+
+      } else {
+
+        for (let i = 1; i <= jam; i++) {
+
+          if (i <= 8) {
+            konversi += 2;
+          }
+          else if (i === 9) {
+            konversi += 3;
+          }
+          else {
+            konversi += 4;
+          }
+
+        }
+
+      }
+
+      const total = upahPerJam * konversi;
+
+      document.getElementById("upahPerJam").innerText =
+        rupiah(upahPerJam);
+
+      document.getElementById("konversiJam").innerText =
+        konversi + " Jam Upah";
+
+      document.getElementById("total").innerText =
+        rupiah(total);
+
+    }
+
+    hitungLembur();
+
+  </script>
 
 </body>
 </html>
