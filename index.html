@@ -328,16 +328,24 @@
   doc.text("GRAND TOTAL:", 20, y);
   doc.text(`${rupiah(grandTotal)}`, 150, y);
 
-  // --- JEMBATAN OTOMATIS KE KODULAR ---
-    // --- METODE LANGSUNG BUKA PDF DI HP (ANTI ERROR 908) ---
+  // --- SOLUSI AMAN: PAKSA DOWNLOAD VIA CHROME HP ---
   try {
-    // Membuka PDF langsung di tab baru browser Chrome HP
-    window.open(doc.output('bloburl'), '_blank');
+    const dataUri = doc.output('datauristring');
+    
+    // Membuat link unduhan bayangan
+    const dlLink = document.createElement('a');
+    dlLink.href = dataUri;
+    dlLink.download = 'Rekap-Upah-Lembur.pdf';
+    
+    // Paksa browser sistem membuka dan mengunduhnya
+    document.body.appendChild(dlLink);
+    dlLink.click();
+    document.body.removeChild(dlLink);
   } catch (e) {
-    // Cadangan jika dibuka di laptop
     doc.save("Rekap-Upah-Lembur.pdf");
   }
-    }
+}
+
 
     // Event Listener Tambahan untuk Live Preview Form
     document.getElementById("gaji").addEventListener("input", hitungPreview);
