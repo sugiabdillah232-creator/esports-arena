@@ -329,10 +329,12 @@
   doc.text(`${rupiah(grandTotal)}`, 150, y);
 
   // --- JEMBATAN OTOMATIS KE KODULAR ---
+    // --- METODE LANGSUNG BUKA PDF DI HP (ANTI ERROR 908) ---
   try {
-    const pdfBase64 = doc.output('datauristring').split(',')[1];
-    window.AppInventor.setWebViewString(pdfBase64);
+    // Membuka PDF langsung di tab baru browser Chrome HP
+    window.open(doc.output('bloburl'), '_blank');
   } catch (e) {
+    // Cadangan jika dibuka di laptop
     doc.save("Rekap-Upah-Lembur.pdf");
   }
     }
