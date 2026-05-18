@@ -16,261 +16,170 @@
 
     <!-- HEADER -->
     <div class="bg-indigo-700 text-white rounded-3xl shadow-2xl overflow-hidden">
-
       <div class="p-8 text-center">
-
         <div class="flex justify-center mb-3">
           <div class="bg-white/20 p-4 rounded-full">
             <i data-lucide="calculator"></i>
           </div>
         </div>
-
-        <h1 class="text-2xl font-bold">
-          Kalkulator Upah Lembur
-        </h1>
-
-        <p class="text-indigo-200 mt-2">
-          Sistem Perhitungan PP No.35 Tahun 2021
-        </p>
-
+        <h1 class="text-2xl font-bold">Kalkulator Upah Lembur</h1>
+        <p class="text-indigo-200 mt-2">Sistem Perhitungan PP No.35 Tahun 2021</p>
       </div>
-
     </div>
-
 
     <!-- FORM -->
     <div class="bg-white rounded-3xl shadow-xl mt-6 p-6">
-
       <div class="grid md:grid-cols-2 gap-5">
-
         <div>
           <label class="font-semibold block mb-2">Tanggal</label>
-          <input
-            type="date"
-            id="tanggal"
-            class="w-full border rounded-xl p-3"
-          />
+          <input type="date" id="tanggal" class="w-full border rounded-xl p-3 focus:outline-indigo-500" />
         </div>
 
         <div>
           <label class="font-semibold block mb-2">Nama Karyawan</label>
-          <input
-            type="text"
-            id="nama"
-            placeholder="Masukkan nama"
-            class="w-full border rounded-xl p-3"
-          />
+          <input type="text" id="nama" placeholder="Masukkan nama" class="w-full border rounded-xl p-3 focus:outline-indigo-500" />
         </div>
 
         <div>
           <label class="font-semibold block mb-2">Gaji Bulanan</label>
-          <input
-            type="number"
-            id="gaji"
-            placeholder="5000000"
-            class="w-full border rounded-xl p-3"
-          />
+          <input type="number" id="gaji" placeholder="5000000" class="w-full border rounded-xl p-3 focus:outline-indigo-500" />
         </div>
 
         <div>
           <label class="font-semibold block mb-2">Jenis Hari</label>
-
-          <select
-            id="jenisHari"
-            class="w-full border rounded-xl p-3"
-          >
+          <select id="jenisHari" class="w-full border rounded-xl p-3 focus:outline-indigo-500">
             <option value="kerja">Hari Kerja</option>
-            <option value="libur">Hari Libur</option>
+            <option value="libur">Hari Libur (6 Hari Kerja/Minggu)</option>
           </select>
         </div>
-
       </div>
-
 
       <!-- SLIDER -->
       <div class="mt-6">
-
-        <label class="font-semibold block mb-3">
-          Jam Lembur
-        </label>
-
-        <input
-          type="range"
-          id="jam"
-          min="1"
-          max="24"
-          value="1"
-          class="w-full"
-        />
-
+        <label class="font-semibold block mb-3">Jam Lembur</label>
+        <input type="range" id="jam" min="1" max="24" value="1" class="w-full accent-indigo-700" />
         <div class="text-center mt-3 text-2xl font-bold text-indigo-700">
           <span id="jamText">1</span> Jam
         </div>
-
       </div>
 
-
-      <!-- HASIL -->
+      <!-- HASIL PREVIEW -->
       <div class="bg-slate-50 border rounded-2xl p-5 mt-6 space-y-4">
-
         <div class="flex justify-between">
-          <span>Upah per Jam</span>
-          <span id="upahPerJam">Rp 0</span>
+          <span>Upah per Jam (Gaji / 173)</span>
+          <span id="upahPerJam" class="font-medium">Rp 0</span>
         </div>
-
         <div class="flex justify-between">
-          <span>Konversi Lembur</span>
-          <span id="konversiJam">0</span>
+          <span>Konversi Jam Lembur</span>
+          <span id="konversiJam" class="font-medium">0 Jam Upah</span>
         </div>
-
         <div class="flex justify-between">
-          <span>Total Jam Bulanan</span>
-          <span id="totalJamBulanan">0 Jam</span>
+          <span>Total Jam Lembur Karyawan Ini (Bulan Ini)</span>
+          <span id="totalJamBulanan" class="font-medium text-indigo-600">0 Jam</span>
         </div>
-
         <hr>
-
         <div class="flex justify-between text-2xl font-bold text-green-600">
-          <span>Total Upah</span>
+          <span>Total Upah Lembur Hari Ini</span>
           <span id="total">Rp 0</span>
         </div>
-
       </div>
 
-
-      <!-- BUTTON -->
+      <!-- BUTTONS -->
       <div class="grid md:grid-cols-3 gap-3 mt-6">
-
-        <button
-          onclick="simpanLembur()"
-          class="bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold"
-        >
-          Simpan
+        <button onclick="simpanLembur()" class="bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold transition">
+          Simpan Data
         </button>
-
-        <button
-          onclick="downloadPDF()"
-          class="bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold"
-        >
+        <button onclick="downloadPDF()" class="bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold transition">
           Download PDF
         </button>
-
-        <button
-          onclick="hapusData()"
-          class="bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-bold"
-        >
-          Hapus Data
+        <button onclick="hapusData()" class="bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-bold transition">
+          Hapus Semua Data
         </button>
-
       </div>
-
     </div>
 
-
-    <!-- REKAP -->
-    <div class="bg-white rounded-3xl shadow-xl mt-6 p-6 overflow-auto">
-
-      <h2 class="text-2xl font-bold mb-5">
-        Rekap Lembur Bulanan
-      </h2>
-
-      <table class="w-full border-collapse">
-
-        <thead>
-          <tr class="bg-slate-100">
-            <th class="border p-3">Tanggal</th>
-            <th class="border p-3">Nama</th>
-            <th class="border p-3">Jam</th>
-            <th class="border p-3">Jenis</th>
-            <th class="border p-3">Total</th>
-          </tr>
-        </thead>
-
-        <tbody id="tabelLembur"></tbody>
-
-      </table>
-
+    <!-- REKAP TABLE -->
+    <div class="bg-white rounded-3xl shadow-xl mt-6 p-6 overflow-hidden">
+      <h2 class="text-2xl font-bold mb-5">Rekap Lembur Bulanan (Semua Karyawan)</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse min-w-[600px]">
+          <thead>
+            <tr class="bg-slate-100 text-left">
+              <th class="border p-3">Tanggal</th>
+              <th class="border p-3">Nama</th>
+              <th class="border p-3 text-center">Jam Riil</th>
+              <th class="border p-3">Jenis Hari</th>
+              <th class="border p-3 text-right">Total Upah</th>
+            </tr>
+          </thead>
+          <tbody id="tabelLembur"></tbody>
+        </table>
+      </div>
 
       <div class="text-right text-3xl font-bold text-indigo-700 mt-5">
-        Grand Total:
-        <span id="grandTotal">Rp 0</span>
+        Grand Total: <span id="grandTotal">Rp 0</span>
       </div>
-
     </div>
 
-
     <footer class="text-center text-slate-500 text-sm py-6">
-      © 2026 sugiproduction.com — All Rights Reserved
+      © 2026 Sugiproduction.com — All Rights Reserved
     </footer>
 
   </div>
 
-
   <script>
-
+    // Inisialisasi Icon Lucide
     lucide.createIcons();
 
     const slider = document.getElementById("jam");
     const jamText = document.getElementById("jamText");
+    const namaInput = document.getElementById("nama");
 
+    // Event Listener untuk Update Slider Real-time
     slider.addEventListener("input", () => {
       jamText.innerText = slider.value;
       hitungPreview();
     });
 
+    // Event Listener ketika nama diketik untuk memfilter total jam kerja karyawan tersebut
+    namaInput.addEventListener("input", tampilkanData);
 
+    // Format mata uang Rupiah
     function rupiah(angka) {
       return "Rp " + Math.round(angka).toLocaleString("id-ID");
     }
 
-
+    // Perhitungan Formula Lembur PP No. 35 Tahun 2021
     function hitungLembur(gaji, jenisHari, jam) {
-
       const upahPerJam = gaji / 173;
-
       let konversi = 0;
 
       if (jenisHari === "kerja") {
-
         if (jam >= 1) {
-          konversi += 1.5;
+          konversi += 1.5; // Jam pertama dikali 1.5
         }
-
         if (jam > 1) {
-          konversi += (jam - 1) * 2;
+          konversi += (jam - 1) * 2; // Jam berikutnya dikali 2
         }
-
       } else {
-
+        // Hari Libur Resmi (Skema Umum 5 atau 6 hari kerja untuk 8 jam pertama)
         for (let i = 1; i <= jam; i++) {
-
           if (i <= 8) {
             konversi += 2;
-          }
-          else if (i === 9) {
+          } else if (i === 9) {
             konversi += 3;
-          }
-          else {
+          } else {
             konversi += 4;
           }
-
         }
-
       }
 
       const total = upahPerJam * konversi;
-
-      return {
-        upahPerJam,
-        konversi,
-        total
-      };
-
+      return { upahPerJam, konversi, total };
     }
 
-
+    // Melakukan Live Preview saat data form diubah
     function hitungPreview() {
-
       const gaji = parseFloat(document.getElementById("gaji").value) || 0;
       const jenisHari = document.getElementById("jenisHari").value;
       const jam = parseInt(document.getElementById("jam").value);
@@ -280,20 +189,18 @@
       document.getElementById("upahPerJam").innerText = rupiah(hasil.upahPerJam);
       document.getElementById("konversiJam").innerText = hasil.konversi + " Jam Upah";
       document.getElementById("total").innerText = rupiah(hasil.total);
-
     }
 
-
+    // Menyimpan data ke LocalStorage
     function simpanLembur() {
-
       const tanggal = document.getElementById("tanggal").value;
-      const nama = document.getElementById("nama").value;
+      const nama = document.getElementById("nama").value.trim();
       const gaji = parseFloat(document.getElementById("gaji").value);
       const jenisHari = document.getElementById("jenisHari").value;
       const jam = parseInt(document.getElementById("jam").value);
 
       if (!tanggal || !nama || !gaji) {
-        alert("Lengkapi data terlebih dahulu");
+        alert("Mohon lengkapi Tanggal, Nama, dan Gaji terlebih dahulu!");
         return;
       }
 
@@ -303,136 +210,144 @@
         tanggal,
         nama,
         jam,
-        jenisHari,
+        jenisHari: jenisHari === "kerja" ? "Hari Kerja" : "Hari Libur",
         total: hasil.total
       };
 
       let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
-
       daftar.push(data);
-
       localStorage.setItem("lembur", JSON.stringify(daftar));
 
       tampilkanData();
-
-      alert("Data lembur berhasil disimpan");
-
+      alert("Data lembur sukses disimpan!");
     }
 
-
+    // Menampilkan data dari LocalStorage ke Tabel & Akumulasi Jam
     function tampilkanData() {
-
       const tabel = document.getElementById("tabelLembur");
-
+      const namaKaryawanAktif = document.getElementById("nama").value.trim().toLowerCase();
       tabel.innerHTML = "";
 
       let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
+      
+      // Urutkan berdasarkan tanggal terbaru
+      daftar.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
 
       let grandTotal = 0;
-      let totalJam = 0;
+      let totalJamKaryawanAktif = 0;
 
       daftar.forEach(item => {
-
         grandTotal += item.total;
-        totalJam += item.jam;
+        
+        // Akumulasi jam kerja bulanan khusus untuk karyawan yang sedang aktif diinput
+        if (namaKaryawanAktif && item.nama.toLowerCase() === namaKaryawanAktif) {
+          totalJamKaryawanAktif += item.jam;
+        }
 
         tabel.innerHTML += `
-          <tr>
+          <tr class="hover:bg-slate-50 border-b">
             <td class="border p-3">${item.tanggal}</td>
-            <td class="border p-3">${item.nama}</td>
-            <td class="border p-3 text-center">${item.jam}</td>
+            <td class="border p-3 font-medium">${item.nama}</td>
+            <td class="border p-3 text-center">${item.jam} Jam</td>
             <td class="border p-3">${item.jenisHari}</td>
-            <td class="border p-3">${rupiah(item.total)}</td>
+            <td class="border p-3 text-right font-semibold text-slate-700">${rupiah(item.total)}</td>
           </tr>
         `;
-
       });
 
       document.getElementById("grandTotal").innerText = rupiah(grandTotal);
-      document.getElementById("totalJamBulanan").innerText = totalJam + " Jam";
-
+      document.getElementById("totalJamBulanan").innerText = totalJamKaryawanAktif + " Jam";
     }
 
-
+    // Menghapus data rekap
     function hapusData() {
-
-      if (confirm("Hapus semua data lembur?")) {
-
+      if (confirm("Apakah Anda yakin ingin menghapus semua riwayat lembur?")) {
         localStorage.removeItem("lembur");
-
         tampilkanData();
+      }
+    }
 
+    // Unduh Dokumen PDF
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
+      if (daftar.length === 0) {
+        alert("Tidak ada data lembur untuk diekspor ke PDF.");
+        return;
       }
 
+      let grandTotal = 0;
+
+      // Desain Header PDF Ringkas
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(20);
+      doc.text("REKAPITULASI UPAH LEMBUR KARYAWAN", 20, 25);
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.text("Berdasarkan Perhitungan Resmi PP No.35 Tahun 2021", 20, 32);
+      doc.line(20, 36, 190, 36);
+
+      doc.setFontSize(11);
+      let y = 48;
+
+      // Header Tabel PDF
+      doc.setFont("helvetica", "bold");
+      doc.text("No", 20, y);
+      doc.text("Tanggal", 30, y);
+      doc.text("Nama Karyawan", 60, y);
+      doc.text("Jam", 110, y);
+      doc.text("Jenis", 125, y);
+      doc.text("Total Upah", 160, y);
+      doc.line(20, y+3, 190, y+3);
+      
+      y += 12;
+      doc.setFont("helvetica", "normal");
+
+      // Isi Tabel PDF
+      daftar.forEach((item, index) => {
+        grandTotal += item.total;
+
+        // Proteksi jika halaman penuh (Page Break)
+        if (y > 270) {
+          doc.addPage();
+          y = 25;
+        }
+
+        doc.text(`${index + 1}`, 20, y);
+        doc.text(`${item.tanggal}`, 30, y);
+        doc.text(`${item.nama}`, 60, y);
+        doc.text(`${item.jam} Jm`, 110, y);
+        doc.text(`${item.jenisHari}`, 125, y);
+        doc.text(`${rupiah(item.total)}`, 160, y);
+
+        y += 9;
+      });
+
+      // Garis Penutup & Grand Total
+      doc.line(20, y, 190, y);
+      y += 12;
+      
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.text("GRAND TOTAL AKUMULASI:", 20, y);
+      doc.text(`${rupiah(grandTotal)}`, 150, y);
+
+      // Simpan PDF secara aman langsung lewat browser
+      doc.save("Rekap-Ubah-Lembur-PP35.pdf");
     }
 
-
-    async function downloadPDF() {
-
-  const { jsPDF } = window.jspdf;
-
-  const doc = new jsPDF();
-
-  let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
-
-  let grandTotal = 0;
-
-  doc.setFontSize(18);
-  doc.text("Slip Rekap Lembur", 20, 20);
-
-  doc.setFontSize(12);
-
-  let y = 40;
-
-  daftar.forEach((item, index) => {
-
-    grandTotal += item.total;
-
-    doc.text(
-      `${index + 1}. ${item.tanggal} | ${item.nama} | ${item.jam} Jam | ${item.jenisHari} | ${rupiah(item.total)}`,
-      20,
-      y
-    );
-
-    y += 10;
-
-  });
-
-  // Garis
-  doc.line(20, y, 190, y);
-
-  y += 15;
-
-  // Grand Total
-  doc.setFontSize(16);
-
-  doc.text(
-    `Grand Total : ${rupiah(grandTotal)}`,
-    20,
-    y
-  );
-
-  // Nama file
-  const pdfBlob = doc.output("blob");
-
-  const link = document.createElement("a");
-
-  link.href = URL.createObjectURL(pdfBlob);
-
-  link.download = "Slip-Lembur.pdf";
-
-  link.click();
-
-}
-
-
+    // Event Listener Tambahan untuk Live Preview Form
     document.getElementById("gaji").addEventListener("input", hitungPreview);
     document.getElementById("jenisHari").addEventListener("change", hitungPreview);
 
+    // Jalankan fungsi awal saat halaman dimuat
     hitungPreview();
     tampilkanData();
-
   </script>
 
 </body>
 </html>
+
