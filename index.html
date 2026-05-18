@@ -269,74 +269,72 @@
 
     // Unduh Dokumen PDF
     function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      
-      let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
-      if (daftar.length === 0) {
-        alert("Tidak ada data lembur untuk diekspor ke PDF.");
-        return;
-      }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  
+  let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
+  if (daftar.length === 0) {
+    alert("Tidak ada data lembur untuk diekspor ke PDF.");
+    return;
+  }
 
-      let grandTotal = 0;
+  let grandTotal = 0;
 
-      // Desain Header PDF Ringkas
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(20);
-      doc.text("REKAPITULASI UPAH LEMBUR KARYAWAN", 20, 25);
-      
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.text("Berdasarkan Perhitungan Resmi PP No.35 Tahun 2021", 20, 32);
-      doc.line(20, 36, 190, 36);
+  // Desain Header PDF
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(20);
+  doc.text("REKAPITULASI UPAH LEMBUR KARYAWAN", 20, 25);
+  
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text("Berdasarkan Perhitungan Resmi PP No.35 Tahun 2021", 20, 32);
+  doc.line(20, 36, 190, 36);
 
-      doc.setFontSize(11);
-      let y = 48;
+  doc.setFontSize(11);
+  let y = 48;
 
-      // Header Tabel PDF
-      doc.setFont("helvetica", "bold");
-      doc.text("No", 20, y);
-      doc.text("Tanggal", 30, y);
-      doc.text("Nama Karyawan", 60, y);
-      doc.text("Jam", 110, y);
-      doc.text("Jenis", 125, y);
-      doc.text("Total Upah", 160, y);
-      doc.line(20, y+3, 190, y+3);
-      
-      y += 12;
-      doc.setFont("helvetica", "normal");
+  // Header Tabel PDF
+  doc.setFont("helvetica", "bold");
+  doc.text("No", 20, y);
+  doc.text("Tanggal", 30, y);
+  doc.text("Nama Karyawan", 60, y);
+  doc.text("Jam", 110, y);
+  doc.text("Jenis", 125, y);
+  doc.text("Total Upah", 160, y);
+  doc.line(20, y+3, 190, y+3);
+  
+  y += 12;
+  doc.setFont("helvetica", "normal");
 
-      // Isi Tabel PDF
-      daftar.forEach((item, index) => {
-        grandTotal += item.total;
+  // Isi Tabel PDF
+  daftar.forEach((item, index) => {
+    grandTotal += item.total;
+    if (y > 270) { doc.addPage(); y = 25; }
 
-        // Proteksi jika halaman penuh (Page Break)
-        if (y > 270) {
-          doc.addPage();
-          y = 25;
-        }
+    doc.text(`${index + 1}`, 20, y);
+    doc.text(`${item.tanggal}`, 30, y);
+    doc.text(`${item.nama}`, 60, y);
+    doc.text(`${item.jam} Jm`, 110, y); 
+    doc.text(`${item.jenisHari}`, 125, y);
+    doc.text(`${rupiah(item.total)}`, 160, y);
+    y += 9;
+  });
 
-        doc.text(`${index + 1}`, 20, y);
-        doc.text(`${item.tanggal}`, 30, y);
-        doc.text(`${item.nama}`, 60, y);
-        doc.text(`${item.jam} Jm`, 110, y);
-        doc.text(`${item.jenisHari}`, 125, y);
-        doc.text(`${rupiah(item.total)}`, 160, y);
+  doc.line(20, y, 190, y);
+  y += 12;
+  
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.text("GRAND TOTAL:", 20, y);
+  doc.text(`${rupiah(grandTotal)}`, 150, y);
 
-        y += 9;
-      });
-
-      // Garis Penutup & Grand Total
-      doc.line(20, y, 190, y);
-      y += 12;
-      
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(14);
-      doc.text("GRAND TOTAL AKUMULASI:", 20, y);
-      doc.text(`${rupiah(grandTotal)}`, 150, y);
-
-      // Simpan PDF secara aman langsung lewat browser
-      doc.save("Rekap-Ubah-Lembur-PP35.pdf");
+  // --- JEMBATAN OTOMATIS KE KODULAR ---
+  try {
+    const pdfBase64 = doc.output('datauristring').split(',')[1];
+    window.AppInventor.setWebViewString(pdfBase64);
+  } catch (e) {
+    doc.save("Rekap-Upah-Lembur.pdf");
+  }
     }
 
     // Event Listener Tambahan untuk Live Preview Form
