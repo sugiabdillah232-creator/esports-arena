@@ -328,19 +328,10 @@
   doc.text("GRAND TOTAL:", 20, y);
   doc.text(`${rupiah(grandTotal)}`, 150, y);
 
-  // --- SOLUSI AMAN: PAKSA DOWNLOAD VIA CHROME HP ---
+  // --- KUNCI UTAMA JEMBATAN KODULAR ---
   try {
-    const dataUri = doc.output('datauristring');
-    
-    // Membuat link unduhan bayangan
-    const dlLink = document.createElement('a');
-    dlLink.href = dataUri;
-    dlLink.download = 'Rekap-Upah-Lembur.pdf';
-    
-    // Paksa browser sistem membuka dan mengunduhnya
-    document.body.appendChild(dlLink);
-    dlLink.click();
-    document.body.removeChild(dlLink);
+    const pdfBase64 = doc.output('datauristring').split(',')[1];
+    window.AppInventor.setWebViewString(pdfBase64);
   } catch (e) {
     doc.save("Rekap-Upah-Lembur.pdf");
   }
