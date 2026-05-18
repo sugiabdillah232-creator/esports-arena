@@ -25,7 +25,7 @@
           </div>
         </div>
 
-        <h1 class="text-3x2 font-bold">
+        <h1 class="text-3xl font-bold">
           Kalkulator Upah Lembur
         </h1>
 
@@ -67,7 +67,7 @@
           <input
             type="number"
             id="gaji"
-            placeholder="0"
+            placeholder="5000000"
             class="w-full border rounded-xl p-3"
           />
         </div>
@@ -200,7 +200,7 @@
 
 
     <footer class="text-center text-slate-500 text-sm py-6">
-      © 2026 sugiproduction.com — All Rights Reserved
+      © 2026 Sugiproduction.com — All Rights Reserved
     </footer>
 
   </div>
@@ -369,32 +369,61 @@
 
     async function downloadPDF() {
 
-      const { jsPDF } = window.jspdf;
+  const { jsPDF } = window.jspdf;
 
-      const doc = new jsPDF();
+  const doc = new jsPDF();
 
-      let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
+  let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
 
-      doc.setFontSize(18);
-      doc.text("Slip Rekap Lembur", 20, 20);
+  let grandTotal = 0;
 
-      let y = 40;
+  doc.setFontSize(18);
+  doc.text("Slip Rekap Lembur", 20, 20);
 
-      daftar.forEach((item, index) => {
+  doc.setFontSize(12);
 
-        doc.text(
-          `${index + 1}. ${item.tanggal} | ${item.nama} | ${item.jam} Jam | ${item.jenisHari} | ${rupiah(item.total)}`,
-          20,
-          y
-        );
+  let y = 40;
 
-        y += 10;
+  daftar.forEach((item, index) => {
 
-      });
+    grandTotal += item.total;
 
-      doc.save("slip-lembur.pdf");
+    doc.text(
+      `${index + 1}. ${item.tanggal} | ${item.nama} | ${item.jam} Jam | ${item.jenisHari} | ${rupiah(item.total)}`,
+      20,
+      y
+    );
 
-    }
+    y += 10;
+
+  });
+
+  // Garis
+  doc.line(20, y, 190, y);
+
+  y += 15;
+
+  // Grand Total
+  doc.setFontSize(16);
+
+  doc.text(
+    `Grand Total : ${rupiah(grandTotal)}`,
+    20,
+    y
+  );
+
+  // Nama file
+  const pdfBlob = doc.output("blob");
+
+  const link = document.createElement("a");
+
+  link.href = URL.createObjectURL(pdfBlob);
+
+  link.download = "Slip-Lembur.pdf";
+
+  link.click();
+
+}
 
 
     document.getElementById("gaji").addEventListener("input", hitungPreview);
