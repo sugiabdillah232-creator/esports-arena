@@ -10,8 +10,6 @@
   
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -21,27 +19,70 @@
 <body class="bg-slate-50 min-h-screen text-slate-800">
 
   <div id="auth-screen" class="flex min-h-screen items-center justify-center p-4 bg-slate-100">
-    <div class="bg-white max-w-md w-full rounded-3xl border border-slate-200 shadow-xl p-8 text-center space-y-6">
-      <div class="flex justify-center">
-        <div class="bg-indigo-600 text-white p-4 rounded-2xl shadow-lg shadow-indigo-100">
-          <i data-lucide="calculator" class="w-10 h-10"></i>
+    <div class="bg-white max-w-md w-full rounded-3xl border border-slate-200 shadow-xl p-8 space-y-6">
+      
+      <div class="text-center space-y-2">
+        <div class="flex justify-center mb-2">
+          <div class="bg-indigo-600 text-white p-3 rounded-2xl shadow-lg">
+            <i data-lucide="calculator" class="w-8 h-8"></i>
+          </div>
+        </div>
+        <h1 class="text-2xl font-extrabold text-slate-900">Sistem Absensi Lembur</h1>
+        <p class="text-xs text-slate-500">Setup Akun & Login Multi-User</p>
+      </div>
+      
+      <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-4">
+        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i> Pendaftaran Pengguna Baru
+        </h2>
+        
+        <div>
+          <label class="text-xs font-semibold text-slate-600 block mb-1.5">1. Buat PIN Baru (hanya pengguna baru)</label>
+          <div class="relative">
+            <input type="password" id="setup-pin" maxlength="6" placeholder="••••••" class="w-full border border-slate-200 bg-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" inputmode="numeric" />
+          </div>
+          <p class="text-[10px] text-slate-400 mt-1">ketik PIN 6-digit</p>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-slate-600 block mb-1.5">2. Konfirmasi PIN Baru</label>
+          <div class="relative">
+            <input type="password" id="confirm-pin" maxlength="6" placeholder="••••••" class="w-full border border-slate-200 bg-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" inputmode="numeric" />
+          </div>
+          <p class="text-[10px] text-slate-400 mt-1">ketik ulang PIN 6-digit</p>
         </div>
       </div>
-      <div>
-        <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">Kalkulator Upah Lembur</h1>
-        <p class="text-sm text-slate-500 mt-2">Sistem Perhitungan PP No.35 Tahun 2021</p>
-      </div>
-      
-      <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 text-xs text-slate-600 leading-relaxed text-left">
-        <p class="font-semibold text-slate-800 mb-1">Akses Terbuka & Terintegrasi:</p>
-        Silakan Masuk atau Daftar menggunakan Akun Google Anda untuk membuka fitur kalkulator, menyimpan riwayat, dan mengunci validitas nama rekapitulasi secara otomatis.
+
+      <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-5 space-y-4">
+        <h2 class="text-lg font-bold text-indigo-900 flex items-center gap-2">
+          <i data-lucide="lock" class="w-5 h-5 text-indigo-600"></i> Akses Pengguna Terdaftar
+        </h2>
+        
+        <div>
+          <label class="text-xs font-semibold text-indigo-700 block mb-1.5">PIN untuk Login (pengguna terdaftar)</label>
+          <div class="relative">
+            <input type="password" id="login-pin" maxlength="6" placeholder="••••••" class="w-full border border-indigo-200 bg-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" inputmode="numeric" />
+          </div>
+          <p class="text-[10px] text-indigo-400 mt-1">numeric mode only</p>
+        </div>
       </div>
 
-      <div class="flex justify-center pt-2">
-        <div id="googleButtonDiv"></div>
+      <div class="pt-2">
+        <button onclick="prosesAksiLanjut()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold text-sm shadow-md transition flex items-center justify-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4"></i> Daftar Baru & Lanjut / Login Langsung
+        </button>
+      </div>
+
+      <div class="bg-slate-100 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 space-y-1 leading-relaxed">
+        <p class="font-bold text-slate-800 mb-1">💡 Info Pendaftaran & Akses:</p>
+        <ul class="list-disc pl-4 space-y-0.5">
+          <li><strong>Daftar Baru:</strong> Masukkan PIN Baru & Konfirmasi.</li>
+          <li><strong>Login Langsung:</strong> Masukkan PIN Terdaftar.</li>
+          <li>PIN akan dikunci & digunakan untuk login selanjutnya.</li>
+        </ul>
       </div>
       
-      <p class="text-[11px] text-slate-400">© 2026 sugiproduction.com</p>
+      <p class="text-[10px] text-center text-slate-400">Copyright © 2022 Kalkulator Upah Lembur Pro.</p>
     </div>
   </div>
 
@@ -62,12 +103,14 @@
 
         <div class="flex items-center gap-4">
           <div class="flex items-center gap-3 bg-slate-100 p-1.5 pr-4 rounded-full border border-slate-200">
-            <img id="user-photo" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover shadow-sm">
-            <div class="text-left hidden sm:block">
-              <p id="user-name" class="text-xs font-semibold text-slate-800 leading-none"></p>
-              <p id="user-email" class="text-[10px] text-slate-500 mt-0.5"></p>
+            <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm" id="user-initial">
+              U
             </div>
-            <button onclick="logoutGoogle()" class="ml-2 p-1.5 text-slate-400 hover:text-red-600 rounded-full hover:bg-white transition" title="Log Out / Keluar">
+            <div class="text-left hidden sm:block">
+              <p id="user-name" class="text-xs font-semibold text-slate-800 leading-none">User</p>
+              <p id="user-display-email" class="text-[10px] text-slate-500 mt-0.5"></p>
+            </div>
+            <button onclick="logoutAplikasi()" class="ml-2 p-1.5 text-slate-400 hover:text-red-600 rounded-full hover:bg-white transition" title="Log Out / Keluar">
               <i data-lucide="log-out" class="w-4 h-4"></i>
             </button>
           </div>
@@ -90,7 +133,7 @@
             </div>
 
             <div>
-              <label class="text-xs font-semibold text-slate-600 block mb-1.5">Nama Karyawan</label>
+              <label class="text-xs font-semibold text-slate-600 block mb-1.5">Nama Karyawan (ID Email)</label>
               <input type="text" id="nama" readonly class="w-full border border-slate-200 bg-slate-100 text-slate-500 rounded-xl p-3 text-sm cursor-not-allowed outline-none" />
             </div>
 
@@ -161,7 +204,6 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
               <h2 class="text-lg font-bold text-slate-900">Rekap Lembur Bulanan (Semua Karyawan)</h2>
-              <p class="text-xs text-slate-500">Rekaman riwayat terpusat secara lokal</p>
             </div>
             <div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 text-right">
               <span class="text-[10px] uppercase font-bold text-indigo-500 block">Grand Total</span>
@@ -196,58 +238,75 @@
 
 
   <script>
-    // PENGIKAT CLIENT ID ASLI KHUSUS WEB APPLICATION YANG BARU SAJA ANDA BUAT
-    const GOOGLE_CLIENT_ID = "780056465565-qpjgd1ogjp4p31bo05n98dkartdi8q7j.apps.googleusercontent.com";
+    lucide.createIcons();
 
-    // Fungsi pemecah Token Keamanan JWT Google
-    function parseJwt(token) {
-      var base64Url = token.split('.')[1];
-      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(jsonPayload);
+    // Logika Jembatan WebView Kodular
+    function prosesAksiLanjut() {
+      const setupPin = document.getElementById("setup-pin").value;
+      const confirmPin = document.getElementById("confirm-pin").value;
+      const loginPin = document.getElementById("login-pin").value;
+
+      let dataSinyal = "";
+
+      // 1. Cek Prioritas Daftar Akun Baru
+      if (setupPin.length === 6 && confirmPin.length === 6) {
+        if (setupPin !== confirmPin) {
+          alert("❌ PIN Baru dan PIN Konfirmasi tidak cocok!");
+          return;
+        }
+        // Format: DAFTAR|pin
+        dataSinyal = `DAFTAR|${setupPin}`;
+      } 
+      // 2. Cek Prioritas Login Langsung (PIN Terdaftar)
+      else if (loginPin.length === 6) {
+        // Format: LOGIN|pin
+        dataSinyal = `LOGIN|${loginPin}`;
+      } 
+      // 3. Penanganan Input Kosong/Salah
+      else {
+        alert("❌ Masukkan PIN Baru & Konfirmasi (untuk Daftar Baru) ATAU PIN Terdaftar (untuk Login)!");
+        return;
+      }
+
+      // Kirim Sinyal Teks ke WebView Kodular
+      try {
+        window.AppInventor.setWebViewString(dataSinyal);
+      } catch(e) {
+        alert("Sinyal dikirim ke Kodular. (Gunakan simulasi login jika di browser)");
+        // Simulasi jika dibuka di browser komputer
+        if (setupPin.length === 6) {
+          terimaDataLoginDariKodular("admin@mail.com");
+        } else {
+          terimaDataLoginDariKodular("user@mail.com");
+        }
+      }
     }
 
-    // Eksekutor setelah respon dari tombol Google berhasil didapatkan
-    function handleCredentialResponse(response) {
-      const responsePayload = parseJwt(response.credential);
-      
-      // Simpan session pendaftaran/login user ke penyimpanan lokal browser
-      localStorage.setItem("user_logged_in", JSON.stringify({
-        name: responsePayload.name,
-        email: responsePayload.email,
-        picture: responsePayload.picture
-      }));
-
-      kontrolOtorisasiLayar();
+    // Fungsi Pintu Masuk yang akan dipanggil oleh Block Kodular setelah autentikasi sukses
+    function terimaDataLoginDariKodular(emailUser) {
+      localStorage.setItem("user_aktif_email", emailUser);
+      cekStatusLogin();
     }
 
-    // Mesin pengatur sistem buka-tutup layar Gerbang vs Dashboard
-    function kontrolOtorisasiLayar() {
-      const session = JSON.parse(localStorage.getItem("user_logged_in"));
-      
+    function cekStatusLogin() {
+      const userEmail = localStorage.getItem("user_aktif_email");
       const authScreen = document.getElementById("auth-screen");
       const dashboardScreen = document.getElementById("dashboard-screen");
       const namaInput = document.getElementById("nama");
 
-      if (session) {
-        // Jika sudah login/terdaftar, buka dashboard utama
+      if (userEmail) {
         authScreen.classList.add("hidden");
         dashboardScreen.classList.remove("hidden");
         
-        // Pasang profil Google ke UI dashboard
-        document.getElementById("user-photo").src = session.picture;
-        document.getElementById("user-name").innerText = session.name;
-        document.getElementById("user-email").innerText = session.email;
-
-        // Kunci input nama berdasarkan nama akun google terdaftar agar tidak dimanipulasi
-        namaInput.value = session.name;
+        // Ambil nama depan email sebagai nama pajangan
+        const namaDisplay = userEmail.split('@')[0];
+        document.getElementById("user-name").innerText = namaDisplay;
+        document.getElementById("user-display-email").innerText = userEmail;
+        document.getElementById("user-initial").innerText = namaDisplay.charAt(0).toUpperCase();
         
-        // Memuat ulang ikon Lucide untuk dashboard
+        namaInput.value = userEmail; // Kunci nama karyawan sesuai ID Email login
         lucide.createIcons();
       } else {
-        // Jika belum masuk atau log-out, tampilkan gerbang masuk utama
         authScreen.classList.remove("hidden");
         dashboardScreen.classList.add("hidden");
         namaInput.value = "";
@@ -255,28 +314,16 @@
       tampilkanData();
     }
 
-    function logoutGoogle() {
-      localStorage.removeItem("user_logged_in");
-      kontrolOtorisasiLayar();
+    function logoutAplikasi() {
+      localStorage.removeItem("user_aktif_email");
+      cekStatusLogin();
     }
 
-    // Inisialisasi awal saat browser memuat aplikasi pertama kali
-    window.onload = function () {
-      google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: handleCredentialResponse
-      });
-      google.accounts.id.renderButton(
-        document.getElementById("googleButtonDiv"),
-        { theme: "outline", size: "large", type: "standard", shape: "pill", logo_alignment: "left" }
-      );
-      
-      kontrolOtorisasiLayar();
+    window.onload = function() {
+      cekStatusLogin();
     }
 
-    // --- LOGIKA UTAMA PERHITUNGAN KALKULATOR ---
-    lucide.createIcons();
-
+    // --- SISTEM PERHITUNGAN KALKULATOR LEMBUR ---
     const slider = document.getElementById("jam");
     const jamText = document.getElementById("jamText");
 
@@ -306,16 +353,13 @@
           else konversi += 4;
         }
       }
-
-      const total = upahPerJam * konversi;
-      return { upahPerJam, konversi, total };
+      return { upahPerJam, konversi, total: upahPerJam * konversi };
     }
 
     function hitungPreview() {
       const gaji = parseFloat(document.getElementById("gaji").value) || 0;
       const jenisHari = document.getElementById("jenisHari").value;
       const jam = parseInt(document.getElementById("jam").value);
-
       const hasil = hitungLembur(gaji, jenisHari, jam);
 
       document.getElementById("upahPerJam").innerText = rupiah(hasil.upahPerJam);
@@ -331,19 +375,12 @@
       const jam = parseInt(document.getElementById("jam").value);
 
       if (!tanggal || !nama || !gaji) {
-        alert("Mohon lengkapi Tanggal, Nama, dan Gaji terlebih dahulu!");
+        alert("Mohon lengkapi data terlebih dahulu!");
         return;
       }
 
       const hasil = hitungLembur(gaji, jenisHari, jam);
-
-      const data = {
-        tanggal,
-        nama,
-        jam,
-        jenisHari: jenisHari === "kerja" ? "Hari Kerja" : "Hari Libur",
-        total: hasil.total
-      };
+      const data = { tanggal, nama, jam, jenisHari: jenisHari === "kerja" ? "Hari Kerja" : "Hari Libur", total: hasil.total };
 
       let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
       daftar.push(data);
@@ -355,8 +392,7 @@
 
     function tampilkanData() {
       const tabel = document.getElementById("tabelLembur");
-      if(!tabel) return; 
-      
+      if(!tabel) return;
       const namaKaryawanAktif = document.getElementById("nama").value.trim().toLowerCase();
       tabel.innerHTML = "";
 
@@ -368,13 +404,12 @@
 
       daftar.forEach(item => {
         grandTotal += item.total;
-        
         if (namaKaryawanAktif && item.nama.toLowerCase() === namaKaryawanAktif) {
           totalJamKaryawanAktif += item.jam;
         }
 
         tabel.innerHTML += `
-          <tr class="hover:bg-slate-50/80 transition">
+          <tr class="hover:bg-slate-50 transition">
             <td class="p-3 border-b border-slate-100">${item.tanggal}</td>
             <td class="p-3 border-b border-slate-100 font-medium text-slate-900">${item.nama}</td>
             <td class="p-3 border-b border-slate-100 text-center bg-slate-50/50 font-semibold">${item.jam} Jam</td>
@@ -393,7 +428,7 @@
     }
 
     function hapusData() {
-      if (confirm("Apakah Anda yakin ingin menghapus semua riwayat lembur?")) {
+      if (confirm("Hapus semua riwayat?")) {
         localStorage.removeItem("lembur");
         tampilkanData();
       }
@@ -402,71 +437,36 @@
     function downloadPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      
       let daftar = JSON.parse(localStorage.getItem("lembur")) || [];
-      if (daftar.length === 0) {
-        alert("Tidak ada data lembur untuk diekspor ke PDF.");
-        return;
-      }
+      if (daftar.length === 0) { alert("Tidak ada data."); return; }
 
       let grandTotal = 0;
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(18);
+      doc.setFont("helvetica", "bold").setFontSize(18);
       doc.text("REKAPITULASI UPAH LEMBUR KARYAWAN", 20, 25);
-      
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.text("Berdasarkan Perhitungan Resmi PP No.35 Tahun 2021", 20, 32);
       doc.line(20, 36, 190, 36);
 
-      doc.setFontSize(11);
       let y = 48;
-
-      doc.setFont("helvetica", "bold");
-      doc.text("No", 20, y);
-      doc.text("Tanggal", 30, y);
-      doc.text("Nama Karyawan", 60, y);
-      doc.text("Jam", 110, y);
-      doc.text("Jenis", 125, y);
-      doc.text("Total Upah", 160, y);
-      doc.line(20, y+3, 190, y+3);
-      
+      doc.text("No", 20, y).text("Tanggal", 30, y).text("Nama Karyawan", 60, y).text("Jam", 110, y).text("Total Upah", 160, y);
       y += 12;
-      doc.setFont("helvetica", "normal");
+      doc.setFont("helvetica", "normal").setFontSize(11);
 
       daftar.forEach((item, index) => {
         grandTotal += item.total;
-        if (y > 270) { doc.addPage(); y = 25; }
-
-        doc.text(`${index + 1}`, 20, y);
-        doc.text(`${item.tanggal}`, 30, y);
-        doc.text(`${item.nama}`, 60, y);
-        doc.text(`${item.jam} Jm`, 110, y); 
-        doc.text(`${item.jenisHari}`, 125, y);
-        doc.text(`${rupiah(item.total)}`, 160, y);
+        doc.text(`${index + 1}`, 20, y).text(`${item.tanggal}`, 30, y).text(`${item.nama}`, 60, y).text(`${item.jam} Jm`, 110, y).text(`${rupiah(item.total)}`, 160, y);
         y += 9;
       });
-
-      doc.line(20, y, 190, y);
-      y += 12;
-      
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(14);
-      doc.text("GRAND TOTAL:", 20, y);
-      doc.text(`${rupiah(grandTotal)}`, 150, y);
 
       try {
         const pdfBase64 = doc.output('datauristring').split(',')[1];
         window.AppInventor.setWebViewString(pdfBase64);
       } catch (e) {
-        doc.save("Rekap-Upah-Lembur.pdf");
+        doc.save("Rekap-Lembur.pdf");
       }
     }
 
-    // Jalankan kalkulasi awal
     hitungPreview();
   </script>
 
 </body>
 </html>
+
