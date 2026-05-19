@@ -445,4 +445,12 @@
         const pdfBase64 = doc.output('datauristring').split(',')[1];
         window.AppInventor.setWebViewString(pdfBase64);
       } catch (e) {
+        doc.save("Rekap-Lembur.pdf");
+      }
+    }
 
+    hitungPreview();
+  </script>
+
+</body>
+</html>
