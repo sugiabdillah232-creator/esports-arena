@@ -107,8 +107,7 @@
               U
             </div>
             <div class="text-left hidden sm:block">
-              <p id="user-name" class="text-xs font-semibold text-slate-800 leading-none">User</p>
-              <p id="user-display-email" class="text-[10px] text-slate-500 mt-0.5"></p>
+              <p id="user-name" class="text-xs font-semibold text-slate-800 leading-none">Nama</p>
             </div>
             <button onclick="logoutAplikasi()" class="ml-2 p-1.5 text-slate-400 hover:text-red-600 rounded-full hover:bg-white transition" title="Log Out / Keluar">
               <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -133,8 +132,8 @@
             </div>
 
             <div>
-              <label class="text-xs font-semibold text-slate-600 block mb-1.5">Nama Karyawan (ID Email)</label>
-              <input type="text" id="nama" readonly class="w-full border border-slate-200 bg-slate-100 text-slate-500 rounded-xl p-3 text-sm cursor-not-allowed outline-none" />
+              <label class="text-xs font-semibold text-slate-600 block mb-1.5">Nama Karyawan</label>
+              <input type="text" id="nama" readonly placeholder="" class="w-full border border-slate-200 bg-slate-100 text-slate-700 font-medium rounded-xl p-3 text-sm cursor-not-allowed outline-none" />
             </div>
 
             <div>
@@ -248,74 +247,60 @@
 
       let dataSinyal = "";
 
-      // 1. Cek Prioritas Daftar Akun Baru
       if (setupPin.length === 6 && confirmPin.length === 6) {
         if (setupPin !== confirmPin) {
           alert("❌ PIN Baru dan PIN Konfirmasi tidak cocok!");
           return;
         }
-        // Format: DAFTAR|pin
         dataSinyal = `DAFTAR|${setupPin}`;
       } 
-      // 2. Cek Prioritas Login Langsung (PIN Terdaftar)
       else if (loginPin.length === 6) {
-        // Format: LOGIN|pin
         dataSinyal = `LOGIN|${loginPin}`;
       } 
-      // 3. Penanganan Input Kosong/Salah
       else {
         alert("❌ Masukkan PIN Baru & Konfirmasi (untuk Daftar Baru) ATAU PIN Terdaftar (untuk Login)!");
         return;
       }
 
-      // Kirim Sinyal Teks ke WebView Kodular
       try {
         window.AppInventor.setWebViewString(dataSinyal);
       } catch(e) {
-        alert("Sinyal dikirim ke Kodular. (Gunakan simulasi login jika di browser)");
-        // Simulasi jika dibuka di browser komputer
-        if (setupPin.length === 6) {
-          terimaDataLoginDariKodular("admin@mail.com");
-        } else {
-          terimaDataLoginDariKodular("user@mail.com");
-        }
+        alert("Sinyal dikirim ke Kodular.");
+        terimaDataLoginDariKodular("Sugi Abdillah");
       }
     }
 
-    // Fungsi Pintu Masuk yang akan dipanggil oleh Block Kodular setelah autentikasi sukses
-    function terimaDataLoginDariKodular(emailUser) {
-      localStorage.setItem("user_aktif_email", emailUser);
+    // Fungsi yang dipanggil oleh Block Kodular setelah autentikasi sukses
+    function terimaDataLoginDariKodular(namaPengguna) {
+      localStorage.setItem("user_aktif_nama", namaPengguna);
       cekStatusLogin();
     }
 
     function cekStatusLogin() {
-      const userEmail = localStorage.getItem("user_aktif_email");
+      const userNama = localStorage.getItem("user_aktif_nama");
       const authScreen = document.getElementById("auth-screen");
       const dashboardScreen = document.getElementById("dashboard-screen");
       const namaInput = document.getElementById("nama");
 
-      if (userEmail) {
+      if (userNama) {
         authScreen.classList.add("hidden");
         dashboardScreen.classList.remove("hidden");
         
-        // Ambil nama depan email sebagai nama pajangan
-        const namaDisplay = userEmail.split('@')[0];
-        document.getElementById("user-name").innerText = namaDisplay;
-        document.getElementById("user-display-email").innerText = userEmail;
-        document.getElementById("user-initial").innerText = namaDisplay.charAt(0).toUpperCase();
+        document.getElementById("user-name").innerText = userNama;
+        document.getElementById("user-initial").innerText = userNama.charAt(0).toUpperCase();
         
-        namaInput.value = userEmail; // Kunci nama karyawan sesuai ID Email login
+        namaInput.value = userNama; // Nama otomatis terisi dan terkunci di form kalkulator
         lucide.createIcons();
       } else {
         authScreen.classList.remove("hidden");
         dashboardScreen.classList.add("hidden");
-        namaInput.value = "";
+        namaInput.value = ""; // Kosong jika belum login
       }
       tampilkanData();
     }
 
     function logoutAplikasi() {
-      localStorage.removeItem("user_aktif_email");
+      localStorage.removeItem("user_aktif_nama");
       cekStatusLogin();
     }
 
@@ -460,13 +445,4 @@
         const pdfBase64 = doc.output('datauristring').split(',')[1];
         window.AppInventor.setWebViewString(pdfBase64);
       } catch (e) {
-        doc.save("Rekap-Lembur.pdf");
-      }
-    }
-
-    hitungPreview();
-  </script>
-
-</body>
-</html>
 
